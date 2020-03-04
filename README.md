@@ -1,2 +1,2 @@
-# Tarea2AriasMadrigalRam-rez
+# Tarea2AriasMadrigalRamirez
 Desarrollo de la progra de la tarea 2 Python3.7.9
