@@ -5,11 +5,10 @@ import RPi.GPIO as GPIO
 
 
 def blink():
-    GPIO.setmode(GPIO.BCM) #Configura GPIO
-    GPIO.setup(4, GPIO.OUT)#Configura puerto como salida
     GPIO.output(4, True) # enciende el LED
-    time.sleep(10) #Pausa
+    time.sleep(5) #Pausa
     GPIO.output(4, False) #apaga el LED
+    GPIO.setwarnings(False)
     return
 
 def power2():
@@ -19,11 +18,11 @@ def power2():
         Elementos.append(x/10)#se introducen los nuevos datos al array
     for x in Elementos:
         x=pow(x,2)
-        print (threading.current_thread().name,x) #Se imprime el nombre del hilo junto con el valor nuevo que se está introduciendo
+        print (threading.current_thread().name,x) #Se imprime el nombre del hilo junto con el valor nuevo que se ests introduciendo
     for x in Elementos:
         x=pow(x,2)
         print (threading.current_thread().name,x) 
-    return print('tiempo de ejecución:', time.time()-start)#Se imprime el tiempo de ejecución
+    return print('tiempo de ejecucion:', time.time()-start)#Se imprime el tiempo de ejecucion
 
 def unhilo():
     hilo = threading.Thread(target=power2) # se adjunta la funcion al hilo
@@ -32,7 +31,7 @@ def unhilo():
 
 def printing(x): # se introducen los nuevos datos al array
     with print_lock: # con lock en el print
-        return print(threading.current_thread().name, x**2) #Se imprime el nombre del hilo junto con el valor nuevo que se está introduciendo
+        return print(threading.current_thread().name, x**2) #Se imprime el nombre del hilo junto con el valor nuevo que se esta introduciendo
 def task(): #
     while True:
         elemento = cola.get() #se obtiene dgito de la cola
@@ -43,7 +42,7 @@ def task(): #
 def cuatrohilos():
     for x in range(4):
         hilo = threading.Thread(target = task) # se adjunta funcion
-        hilo.daemon = True # se usa la función .daemon para finalizar el hilo tras haberlo utilizado
+        hilo.daemon = True # se usa la funcion .daemon para finalizar el hilo tras haberlo utilizado
         hilo.start() # se inicia el hilo
     start = time.time() # se inicia timer
     for x in range(100):
@@ -52,11 +51,14 @@ def cuatrohilos():
     for x in range(100):
         cola.put(x/10)
         cola.join() # Acomoda los elementos y los separa por comas (arrray)
-    print('tiempo de ejecución:', time.time()-start)#Se imprime el tiempo de ejecución
+    print('tiempo de ejecucion:', time.time()-start)#Se imprime el tiempo de ejecucion
     return
 
 print_lock= threading.Lock()
-cola = Queue() # La variable cola, es utilizada para ir introduciendo los valores al array
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM) #Configura GPIO
+GPIO.setup(4, GPIO.OUT)#Configura puerto como salida
+cola = Queue() # La variable cola, es utilizada para ir introduciendo los valores al array.
 cuatrohilos()
 unhilo()
 blink()
